@@ -9,7 +9,7 @@ export interface Character {
 export interface CharacterClass {
     className: string, //class name e.g. Wizard, Rogue
     hitDie: number, //hit die e.g. 8, 6
-    savingThrows: string[], //saving throws e.g. Strength, Dexterity
+    abilityScores: string[], //saving throws e.g. Strength, Dexterity
     skillProficiencies: string[] //proficiencies e.g. Acrobatics, Stealth
 }
 

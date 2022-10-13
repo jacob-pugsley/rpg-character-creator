@@ -3,6 +3,7 @@ import Axios from "axios"
 import SkillList from "../SkillList"
 
 import "./ClassDisplay.css"
+import { AbilityScore } from "../../interfaces/AbilityScore"
 
 /* eslint-disable */
 const axios = Axios.create()
@@ -40,6 +41,22 @@ const getSavingThrows = (savingThrows: any) => {
 	}
 	return skillList
 	
+}
+
+const getSavingThrowList = (savingThrows: any[]) => {
+	const throwList: AbilityScore[] = []
+	for( let i = 0; i < savingThrows.length; i++ ){
+		const savingThrow: any = savingThrows[i]
+
+		let abScore: AbilityScore = {
+			...savingThrow,
+			score: 0,
+			isSavingThrow: true
+		}
+
+		throwList.push(abScore)
+	}
+	return throwList
 }
 
 //hardcode the data for a barbarian here to avoid data being undefined
@@ -330,6 +347,20 @@ const ClassDisplay = (props: any) => {
 			return {...prevState, skillProficiencies: skills}
 		})
 	}
+
+	const updateAbilityScores = (abScores: AbilityScore[]) => {
+		updateClassData((prevState: any) => {
+			return {...prevState, abilityScores: abScores}
+		})
+	}
+
+	//update the ability scores only when the name property changes
+	//  as they are locked to the chosen class
+	useEffect(() => {
+		const list: AbilityScore[] = getSavingThrowList(data.saving_throws)
+		console.log(list)
+		updateAbilityScores(list)
+	}, [classData.className])
 
     return (
 		<div className="block-display">

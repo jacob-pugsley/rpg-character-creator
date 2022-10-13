@@ -55,7 +55,7 @@ let Init_Race: CharacterRace = {
 let Init_Class: CharacterClass = {
     className: "Barbarian",
     hitDie: 0,
-    savingThrows: [],
+    abilityScores: [],
     skillProficiencies: []
 }
 

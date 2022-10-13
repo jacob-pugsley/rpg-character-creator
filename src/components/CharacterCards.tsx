@@ -15,7 +15,7 @@ const CharacterCards = (props: any) => {
             <h4>the {raceData.raceName} {classData.className}</h4>
             <p>Ability scores:</p>
             <ul>
-                {classData.savingThrows.map((st: any) => <li key={st.index}>{st.name}: 15</li>)}
+                {classData.abilityScores.map((st: any) => <li key={st.index}>{st.name}: 15</li>)}
             </ul>
             <p>Skills:</p>
             <ul>
