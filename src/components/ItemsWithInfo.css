@@ -1,0 +1,32 @@
+#skillListContent {
+    width: 100%;
+    display: flex;
+    margin-right: 10px;
+}
+
+#skillList {
+    list-style: none;
+    padding: 0;
+    padding-right: 2px;
+    margin-top: 0;
+
+    text-align: left;
+}
+
+#skillList .selected {
+    border: 2px solid gray;
+}
+
+#infoDisplay {
+    text-align: left;
+    padding: 2px;
+
+    border: 2px solid gray;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px gray;
+}
+
+#skillListContent button {
+    margin-left: 10px;
+    height: fit-content;
+}

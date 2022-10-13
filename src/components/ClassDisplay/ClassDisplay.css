@@ -1,0 +1,19 @@
+.skill-list li, .skill-list{
+    list-style: none;
+    text-align: left;
+    padding-left: 0;
+}
+
+.flex-display {
+    display: flex;
+}
+
+.block-display {
+    display: block;
+    width: 75%;
+    margin: auto;
+}
+
+.flex-display div{
+    width: 100%;
+}
