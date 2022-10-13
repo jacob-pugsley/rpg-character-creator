@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react"
+import { ChangeEvent, useEffect, useReducer, useState } from "react"
 import { isInterfaceDeclaration } from "typescript"
 import { Character, CharacterBackground, CharacterClass, CharacterRace } from "../interfaces/CharacterInterfaces"
 import BackgroundDisplay from "./BackgroundDisplay"
@@ -52,7 +52,7 @@ let Init_Race: CharacterRace = {
     bonuses: []
 }
 
-let Init_Class: CharacterClass = {
+const Init_Class: CharacterClass = {
     className: "Barbarian",
     hitDie: 0,
     abilityScores: [],
@@ -62,22 +62,38 @@ let Init_Class: CharacterClass = {
 const CreateCharacter = () => {
     const [step, setStep] = useState(0) 
     const [rolls, setRolls] = useState(Init_Stat_Rolls)
-    const [selectedClass, setSelectedClass] = useState(Init_Class)
+    //const [selectedClass, setSelectedClass] = useState(Init_Class)
     const [selectedRace, setSelectedRace] = useState(Init_Race)
     const [rollCount, setRollCount] = useState(0)
     const [selectedBackground, setSelectedBackground] = useState(Init_Background)
 
-    const [className, setClassName] = useState(Init_Class.className)
-    const [raceName, setRaceName] = useState(Init_Race.raceName)
-    const [backgroundName, setBackgroundName] = useState(Init_Background.backgroundName)
+    const [selectedClass, setSelectedClass] = useReducer(
+        (selectedClass: CharacterClass, updates: any) => ({...selectedClass, ...updates}),
+        Init_Class
+    )
 
+    
 
     //updaters
-    const updateClass = (update: CharacterClass) => {
+    const updateClass = (update: any) => {
+        console.log("updating class")
+        // setSelectedClass((prevState: CharacterClass) => {
+        //     return {...prevState, ...update}
+        // })
         setSelectedClass(update)
-        setClassName(update.className)
     }
 
+    const updateBackground = (update: any) => {
+        setSelectedBackground((prevState: CharacterBackground) => {
+            return {...prevState, ...update}
+        })
+    }
+
+    const updateRace = (update: any) => {
+        setSelectedRace((prevState: CharacterRace) => {
+            return {...prevState, ...update}
+        })
+    }
 
     const nextStep = () => {
         setStep(step + 1)
@@ -116,7 +132,10 @@ const CreateCharacter = () => {
         let val = el.value
 
         if (val != null) {
-            setClassName(val)
+            //setClassName(val)
+            updateClass(
+                {className: val}
+            )
         }
     }
 
@@ -125,7 +144,9 @@ const CreateCharacter = () => {
         let val = el.value
 
         if (val != null) {
-            setRaceName(val)
+            updateRace(
+                {raceName: val}
+            )
         }
     }
 
@@ -134,7 +155,9 @@ const CreateCharacter = () => {
         let val = el.value
 
         if (val != null) {
-            setBackgroundName(val)
+            updateBackground(
+                {backgroundName: val}
+            )
         } 
     }
 
@@ -173,7 +196,7 @@ const CreateCharacter = () => {
                         {Classes.map((c) => <option key={c}>{c}</option>)}
                     </select>
 
-                    <ClassDisplay name={selectedClass} updater={updateClass}/>
+                    <ClassDisplay className={selectedClass.className} updater={updateClass}/>
 
                     <p>Your race determines some of your character's abilities as well as your size, movement speed, and the languages you speak.</p>
                     <select onChange={onSelectRace}>

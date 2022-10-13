@@ -4,6 +4,7 @@ import SkillList from "../SkillList"
 
 import "./ClassDisplay.css"
 import { AbilityScore } from "../../interfaces/AbilityScore"
+import { CharacterClass } from "../../interfaces/CharacterInterfaces"
 
 /* eslint-disable */
 const axios = Axios.create()
@@ -303,64 +304,51 @@ const Default_Data = {
 	"url": "/api/classes/barbarian"
 }
 
-interface CharacterClass {
-    className: string, //class name e.g. Wizard, Rogue
-    hitDie: number, //hit die e.g. 8, 6
-    savingThrows: string[], //saving throws e.g. Strength, Dexterity
-    skillProficiencies: string[] //proficiencies e.g. Acrobatics, Stealth
-}
-
-let Init_Class: CharacterClass;
-
-
-
 const ClassDisplay = (props: any) => {
 
 	//data is what is returned from axios
 	const [data, updateData] = useState(Default_Data);
 
-	//classData is what comes from the parent, and will need to be
-	//  updated when new data is retrieved
-	const [classData, updateClassData] = useState(props.name)
+	useEffect(() => {
+		getData()
+	}, [props.className])
 
 	useEffect(() => {
-		axios.get("http://localhost:8080/classinfo?name=" + classData.className.toLowerCase())
+		getData()
+	}, [])
+
+	const getData = () => {
+		axios.get("http://localhost:8080/classinfo?name=" + props.className.toLowerCase())
 		.then((response) => {
 			updateData(response.data)
-			updateParent()
+			props.updater(
+				{abilityScores: getAbilityScoreObjects(response.data.saving_throws),
+				skillProficiencies: []
+
+			})
 		})
-	}, [props.name])
-
-	//update the parent whenever the classData is modified
-	useEffect(() => {
-		updateParent()
-	}, [classData])
-
-	//this should update the name prop passed by our parent
-	//  when the data is retrieved from axios or otherwise updated
-	const updateParent = () => {
-		props.updater(classData)
 	}
 
 	const updateSkills = (skills: string[]) => {
-		updateClassData((prevState: any) => {
-			return {...prevState, skillProficiencies: skills}
-		})
+		props.updater({skillProficiencies: skills})
 	}
 
-	const updateAbilityScores = (abScores: AbilityScore[]) => {
-		updateClassData((prevState: any) => {
-			return {...prevState, abilityScores: abScores}
-		})
-	}
+	const getAbilityScoreObjects = (abScores: any) => {
+		const result: AbilityScore[] = []
+		for(let i = 0; i < abScores.length; i++) {
+			const scoreData: any = abScores[i]
+			const temp: AbilityScore = {
+				name: getFullSkillName(scoreData.name),
+				index: scoreData.index,
+				url: scoreData.url,
+				score: 0,
+				isSavingThrow: true
+			}
 
-	//update the ability scores only when the name property changes
-	//  as they are locked to the chosen class
-	useEffect(() => {
-		const list: AbilityScore[] = getSavingThrowList(data.saving_throws)
-		console.log(list)
-		updateAbilityScores(list)
-	}, [classData.className])
+			result.push(temp)
+		}
+		return result
+	}
 
     return (
 		<div className="block-display">
