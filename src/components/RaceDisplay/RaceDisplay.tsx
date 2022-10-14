@@ -113,23 +113,34 @@ function getLanguages(languages: any) {
 
 const RaceDisplay = (props: any) => {
 
-    const race: CharacterRace = props.race
-
     const [data, updateData] = useState(Default_Data);
 
 	useEffect(() => {
-		axios.get("http://localhost:8080/raceinfo?name=" + race.raceName.toLowerCase())
+		getData()
+	}, [props.raceName])
+
+	useEffect(() => {
+		getData()
+	}, [])
+
+	const getData = () => {
+		axios.get("http://localhost:8080/raceinfo?name=" + props.raceName.toLowerCase())
 		.then((response) => {
 			updateData(response.data)
+			props.updater(
+				{
+					languages: response.data.languages,
+					bonuses: getAbilityBonuses(response.data.ability_bonuses)
+				}
+			)
 		})
-	}, [props.race])
-
+	}
 
     return (
         <div>
             <ReactTooltip delayHide={5} />
 			<div className="block-display">
-			<h1>The racial traits for {race.raceName} are:</h1>
+			<h1>The racial traits for {props.raceName} are:</h1>
 			<div className="flex-display">
 				<div>Height/weight</div>
 			</div>

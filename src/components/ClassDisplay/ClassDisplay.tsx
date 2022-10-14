@@ -323,7 +323,8 @@ const ClassDisplay = (props: any) => {
 			updateData(response.data)
 			props.updater(
 				{abilityScores: getAbilityScoreObjects(response.data.saving_throws),
-				skillProficiencies: []
+				skillProficiencies: [],
+				hitDie: response.data.hit_die
 
 			})
 		})

@@ -62,14 +62,21 @@ const Init_Class: CharacterClass = {
 const CreateCharacter = () => {
     const [step, setStep] = useState(0) 
     const [rolls, setRolls] = useState(Init_Stat_Rolls)
-    //const [selectedClass, setSelectedClass] = useState(Init_Class)
-    const [selectedRace, setSelectedRace] = useState(Init_Race)
     const [rollCount, setRollCount] = useState(0)
-    const [selectedBackground, setSelectedBackground] = useState(Init_Background)
 
     const [selectedClass, setSelectedClass] = useReducer(
         (selectedClass: CharacterClass, updates: any) => ({...selectedClass, ...updates}),
         Init_Class
+    )
+
+    const [selectedRace, setSelectedRace] = useReducer(
+        (selectedRace: CharacterRace, updates: any) => ({...selectedRace, ...updates}),
+        Init_Race
+    )
+
+    const [selectedBackground, setSelectedBackground] = useReducer(
+        (selectedBackground: CharacterBackground, updates: any) => ({...selectedBackground, ...updates}),
+        Init_Background
     )
 
     
@@ -84,15 +91,11 @@ const CreateCharacter = () => {
     }
 
     const updateBackground = (update: any) => {
-        setSelectedBackground((prevState: CharacterBackground) => {
-            return {...prevState, ...update}
-        })
+        setSelectedBackground(update)
     }
 
     const updateRace = (update: any) => {
-        setSelectedRace((prevState: CharacterRace) => {
-            return {...prevState, ...update}
-        })
+        setSelectedRace(update)
     }
 
     const nextStep = () => {
@@ -189,7 +192,7 @@ const CreateCharacter = () => {
         case 2: 
             return (
                 <div>
-                    <CharacterCards characterClass={selectedClass} characterRace={selectedRace} CharacterBackground={selectedBackground}/>
+                    <CharacterCards characterClass={selectedClass} characterRace={selectedRace} characterBackground={selectedBackground}/>
                     <h3>Choose your class, race, and background</h3>
                     <p>Your class determines the job or role your character plays in society. Are they a powerful wizard? A thieving rogue? Or a musical bard?</p>
                     <select onChange={onSelectClass}>
@@ -203,7 +206,7 @@ const CreateCharacter = () => {
                         {Races.map((c) => <option key={c}>{c}</option>)}
                     </select>
 
-                    <RaceDisplay race={selectedRace}/>
+                    <RaceDisplay raceName={selectedRace.raceName} updater={updateRace}/>
 
 
                     <p>Your background provides more specifics on what your character does and what kind of experiences they've had. 
@@ -214,7 +217,7 @@ const CreateCharacter = () => {
                     </select>
             
 
-                    <BackgroundDisplay background={selectedBackground}/>
+                    <BackgroundDisplay backgroundName={selectedBackground.backgroundName} updater={updateBackground} />
 
 
                     <button onClick={nextStep}>Confirm selections and move on.</button>
