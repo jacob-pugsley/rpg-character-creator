@@ -7,6 +7,11 @@
 .abilityBoxHolder div {
     text-align: left;
     margin-right: 20px;
+
+    flex-grow: 1;
+    flex-basis: 0;
+
+    min-height: 80%;
 }
 
 .abilityBox {

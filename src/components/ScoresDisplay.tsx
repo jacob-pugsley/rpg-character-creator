@@ -149,7 +149,7 @@ const ScoresDisplay = (props: any) => {
             <div key={abDisplay.abName}>
                 <p className="abilityTitleP">
                     {abDisplay.abName} {abDisplay.abScore} {abDisplay.abBonus != 0 && "+" + abDisplay.abBonus} <br />&nbsp;&nbsp;
-                    {abDisplay.abModifier} &nbsp; <b>(+{abDisplay.abModifier})</b>
+                    <b>(+{abDisplay.abModifier})</b>
                 </p> 
                 <div className={"abilityBox " + abDisplay.displayColor}>
                     {abDisplay.abName === "Constitution" &&
@@ -160,7 +160,7 @@ const ScoresDisplay = (props: any) => {
                         {abDisplay.skills.map((skill: any) => 
                             <li key={skill.skillName}>
                                 {skill.skillName} +{abDisplay.abModifier + 
-                                skill.isProficient ? 2 : 0}
+                                (skill.isProficient ? props.level : 0)}
                             </li>
                         )}
                     </ul>

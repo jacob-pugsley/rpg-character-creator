@@ -43,7 +43,7 @@ const BackgroundDisplay = (props: any) => {
                 <br />
                 <div className="flex-display">
                     <div>
-                        <span data-tip="You may add your proficieny bonus to each of these if you have not already done so through your class.">Skill Proficiencies</span>
+                        <span >Skill Proficiencies</span>
                         <p>Your chosen background gives you some innate advantages in the form of extra skill proficiencies.</p>
                         <SkillList skills={data.skills} addProficiency={false} />
                     </div>

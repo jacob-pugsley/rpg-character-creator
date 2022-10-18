@@ -1,4 +1,3 @@
-import ReactTooltip from "react-tooltip"
 import { useState, useEffect } from "react"
 import Axios from "axios"
 import LanguageList from "../LanguageList"
@@ -138,7 +137,6 @@ const RaceDisplay = (props: any) => {
 
     return (
         <div>
-            <ReactTooltip delayHide={5} />
 			<div className="block-display">
 			<h1>The racial traits for {props.raceName} are:</h1>
 			<div className="flex-display">
@@ -148,7 +146,7 @@ const RaceDisplay = (props: any) => {
 			<br />
 			<div className="flex-display">
 				<div>
-					<span data-tip="Languages determine what your character can read and speak.">
+					<span >
 						Languages
 					</span>
 					<p>You will be able to speak and read the following languages by virtue of your chosen race.</p>
@@ -156,7 +154,7 @@ const RaceDisplay = (props: any) => {
 				</div>
 
 				<div>
-					<span data-tip="This will be added to the ability score from your class.">Ability Score Bonuses</span>
+					<span >Ability Score Bonuses</span>
 					<p>Your chosen race gives you some innate advantages in the form of ability bonuses.</p>
 					<ul>
 						{getAbilityBonuses(data.ability_bonuses).map((ability) => <li key={ability.name}>{ability.bonus} to {ability.name}</li>)}

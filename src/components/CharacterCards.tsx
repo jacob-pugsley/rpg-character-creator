@@ -2,8 +2,6 @@ import { useEffect, useState } from "react"
 import { AbilityScore } from "../interfaces/AbilityScore"
 import { Character, CharacterBackground, CharacterClass, CharacterRace } from "../interfaces/CharacterInterfaces"
 import ScoresDisplay from "./ScoresDisplay"
-import VerticalBarChart from "./VerticalBarChart"
-import VerticalBarChart2, { DataPoint } from "./VerticalBarChart2"
 
 const CharacterCards = (props: any) => {
 

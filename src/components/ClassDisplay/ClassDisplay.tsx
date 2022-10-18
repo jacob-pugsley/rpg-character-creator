@@ -196,15 +196,14 @@ const ClassDisplay = (props: any) => {
 			</div>
 			<div className="flex-display">
 				<div>
-					<span data-tip={"Your saving throws determine how easily you can get out of bad situations. " + 
-					"For example, a good Strength bonus will help you to lift a heavy object off of your body."}>
+					<span>
 						Saving Throws
 					</span>
 					<p>You will have a better chance of escaping using the following skills.</p>
 					<SkillList skills={getSavingThrows(data.abilityScores)} addProficiency={false} checkable={false} />
 				</div>
 				<div>
-					<span data-tip={"Your skill proficiencies determine your strengths and weaknesses. For example, deception determines how effectively you can stretch the truth."}>
+					<span >
 						Skill Proficiencies
 					</span>
 					<p>Choose {data.choices} of the following skills to become better at than others.</p> 
