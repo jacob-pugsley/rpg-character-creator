@@ -93,7 +93,7 @@ function getAbilityBonuses(abilities: any) {
         abList.push(
             {
                 name: getFullSkillName(abilities[i].ability_score.name),
-                bonus: (abilities[i].bonus > 0 ? "+" : "-") + abilities[i].bonus
+                bonus: abilities[i].bonus
             }
         )   
     }

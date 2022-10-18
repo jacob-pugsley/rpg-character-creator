@@ -19,7 +19,7 @@ function newClass(target: Element) {
     return oldClass.replace(" selected", "")
 }
 
-function getShortSkillName(skill: string) {
+export function getShortSkillName(skill: string) {
     skill = skill.toLowerCase()
     switch(skill) {
         case "strength": return "str"
@@ -32,7 +32,7 @@ function getShortSkillName(skill: string) {
     }
 }
 
-function getFullSkillName(skill: string) {
+export function getFullSkillName(skill: string) {
     skill = skill.toLowerCase()
     switch(skill) {
         case "str": return "Strength"
@@ -54,6 +54,13 @@ const SkillList = (props:any) => {
     const Default_List: ItemWithDescription[] = []
 
     const [skillList, setSkillList] = useState(Default_List)
+
+    useEffect(() => {
+        const shortSkills: string[] = []
+        for( let i = 0; i < skills.length; i++ ){
+            shortSkills.push(getShortSkillName(skills[i]))
+        }
+    }, [])
 
 	useEffect(() => {
         const shortSkills: string[] = []
@@ -90,6 +97,7 @@ const SkillList = (props:any) => {
 
 
     const updateSkills = (skills: string[]) => {
+
         updateSelectedSkills(skills)
     }
 

@@ -1,3 +1,5 @@
+import { AbilityScore } from "./AbilityScore"
+
 export interface Character {
     pcName: string, //the player character's name
     pcLevel: number, //the character's starting level
@@ -9,8 +11,9 @@ export interface Character {
 export interface CharacterClass {
     className: string, //class name e.g. Wizard, Rogue
     hitDie: number, //hit die e.g. 8, 6
-    abilityScores: string[], //saving throws e.g. Strength, Dexterity
-    skillProficiencies: string[] //proficiencies e.g. Acrobatics, Stealth
+    abilityScores: AbilityScore[], //saving throws e.g. Strength, Dexterity
+    skillProficiencies: string[], //proficiencies e.g. Acrobatics, Stealth
+    level: number
 }
 
 export interface CharacterRace {

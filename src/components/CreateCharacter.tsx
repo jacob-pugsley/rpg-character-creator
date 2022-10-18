@@ -56,7 +56,8 @@ const Init_Class: CharacterClass = {
     className: "Barbarian",
     hitDie: 0,
     abilityScores: [],
-    skillProficiencies: []
+    skillProficiencies: [],
+    level: 1
 }
 
 const CreateCharacter = () => {
@@ -83,10 +84,7 @@ const CreateCharacter = () => {
 
     //updaters
     const updateClass = (update: any) => {
-        console.log("updating class")
-        // setSelectedClass((prevState: CharacterClass) => {
-        //     return {...prevState, ...update}
-        // })
+
         setSelectedClass(update)
     }
 

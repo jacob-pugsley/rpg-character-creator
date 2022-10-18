@@ -7,12 +7,7 @@ interface ItemWithDescription {
     description: string
 }
 
-interface CheckedSkill {
-    skill: string,
-    addProfBonus: boolean
-}
-
-const Fake_CheckedSkills: CheckedSkill[] = []
+const Fake_CheckedSkills: string[] = []
 
 const ItemsWithInfo = (props: any) => {
 
@@ -89,13 +84,13 @@ const ItemsWithInfo = (props: any) => {
 
     const addCheckedSkill = (skill: string) => {
         setCheckedSkill((prevState) => {
-            return [...prevState, {skill: skill, addProfBonus: props.addProficiency}]
+            return [...prevState, skill]
         })
     }
 
     const removeCheckedSkill = (skill: string) => {
         setCheckedSkill((prevState) => {
-            return [...prevState.filter(el => el.skill !== skill)]
+            return [...prevState.filter(el => el !== skill)]
         })
     }
 

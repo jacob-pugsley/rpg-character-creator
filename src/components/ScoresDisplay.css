@@ -1,0 +1,49 @@
+.abilityBoxHolder {
+    display: flex;
+    width: 75%;
+    margin: auto;
+}
+
+.abilityBoxHolder div {
+    text-align: left;
+    margin-right: 20px;
+}
+
+.abilityBox {
+    border-radius: 10px;
+    width: 100%;
+}
+
+.abilityTitleP {
+    margin: 0px;
+    
+}
+
+.abilityBoxUl {
+    list-style: none;
+    padding-left: 1px;
+}
+
+.abilityBox.gray {
+    border: 2px solid gray;
+}
+
+.abilityBox.red {
+    border: 2px solid red;
+}
+
+.abilityBox.green {
+    border: 2px solid green;
+}
+
+.abilityBox.blue {
+    border: 2px solid blue;
+}
+
+.abilityBox.yellow {
+    border: 2px solid yellow;
+}
+
+.abilityBox.pink {
+    border: 2px solid pink;
+}

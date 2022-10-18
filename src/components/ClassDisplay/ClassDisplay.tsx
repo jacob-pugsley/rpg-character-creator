@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, ChangeEvent } from "react"
 import Axios from "axios"
-import SkillList from "../SkillList"
+import SkillList, { getShortSkillName } from "../SkillList"
 
 import "./ClassDisplay.css"
-import { AbilityScore } from "../../interfaces/AbilityScore"
+import { AbilityScore, RawAbilityScore } from "../../interfaces/AbilityScore"
 import { CharacterClass } from "../../interfaces/CharacterInterfaces"
+import { create } from "domain"
 
 /* eslint-disable */
 const axios = Axios.create()
@@ -25,9 +26,8 @@ function getFullSkillName(skill: string) {
 const getSkills = (skills: any) => {
 	const skillList: string[] = []
 
-
-	for( let sk=0; sk < skills.from.options.length; sk++ ) {
-		skillList.push(skills.from.options[sk].item.name.split("Skill: ")[1])
+	for( let sk=0; sk < skills.length; sk++ ) {
+		skillList.push(skills[sk])
 	}
 	return skillList
 }
@@ -35,280 +35,77 @@ const getSkills = (skills: any) => {
 const getSavingThrows = (savingThrows: any) => {
 	const skillList: string[] = []
 	for( let sk=0; sk < savingThrows.length; sk++ ) {
-		if (savingThrows[sk] === undefined || savingThrows[sk].name === undefined) {
-			return
-		}
-			skillList.push(getFullSkillName(savingThrows[sk].name))
+		skillList.push(getFullSkillName(savingThrows[sk]))
 	}
 	return skillList
 	
 }
 
-const getSavingThrowList = (savingThrows: any[]) => {
-	const throwList: AbilityScore[] = []
-	for( let i = 0; i < savingThrows.length; i++ ){
-		const savingThrow: any = savingThrows[i]
-
-		let abScore: AbilityScore = {
-			...savingThrow,
-			score: 0,
-			isSavingThrow: true
-		}
-
-		throwList.push(abScore)
-	}
-	return throwList
-}
-
 //hardcode the data for a barbarian here to avoid data being undefined
 const Default_Data = {
-	"index": "barbarian",
-	"name": "Barbarian",
-	"hit_die": 12,
-	"proficiency_choices": [
-		{
-			"desc": "Choose two from Animal Handling, Athletics, Intimidation, Nature, Perception, and Survival",
-			"choose": 2,
-			"type": "proficiencies",
-			"from": {
-				"option_set_type": "options_array",
-				"options": [
-					{
-						"option_type": "reference",
-						"item": {
-							"index": "skill-animal-handling",
-							"name": "Skill: Animal Handling",
-							"url": "/api/proficiencies/skill-animal-handling"
-						}
-					},
-					{
-						"option_type": "reference",
-						"item": {
-							"index": "skill-athletics",
-							"name": "Skill: Athletics",
-							"url": "/api/proficiencies/skill-athletics"
-						}
-					},
-					{
-						"option_type": "reference",
-						"item": {
-							"index": "skill-intimidation",
-							"name": "Skill: Intimidation",
-							"url": "/api/proficiencies/skill-intimidation"
-						}
-					},
-					{
-						"option_type": "reference",
-						"item": {
-							"index": "skill-nature",
-							"name": "Skill: Nature",
-							"url": "/api/proficiencies/skill-nature"
-						}
-					},
-					{
-						"option_type": "reference",
-						"item": {
-							"index": "skill-perception",
-							"name": "Skill: Perception",
-							"url": "/api/proficiencies/skill-perception"
-						}
-					},
-					{
-						"option_type": "reference",
-						"item": {
-							"index": "skill-survival",
-							"name": "Skill: Survival",
-							"url": "/api/proficiencies/skill-survival"
-						}
-					}
-				]
-			}
-		}
+	"hitDie": 8,
+	"abilityScores": [
+		"DEX",
+		"INT"
 	],
-	"proficiencies": [
-		{
-			"index": "light-armor",
-			"name": "Light Armor",
-			"url": "/api/proficiencies/light-armor"
-		},
-		{
-			"index": "medium-armor",
-			"name": "Medium Armor",
-			"url": "/api/proficiencies/medium-armor"
-		},
-		{
-			"index": "shields",
-			"name": "Shields",
-			"url": "/api/proficiencies/shields"
-		},
-		{
-			"index": "simple-weapons",
-			"name": "Simple Weapons",
-			"url": "/api/proficiencies/simple-weapons"
-		},
-		{
-			"index": "martial-weapons",
-			"name": "Martial Weapons",
-			"url": "/api/proficiencies/martial-weapons"
-		},
-		{
-			"index": "saving-throw-str",
-			"name": "Saving Throw: STR",
-			"url": "/api/proficiencies/saving-throw-str"
-		},
-		{
-			"index": "saving-throw-con",
-			"name": "Saving Throw: CON",
-			"url": "/api/proficiencies/saving-throw-con"
-		}
+	"skillProficiencies": [
+		"Acrobatics",
+		"Athletics",
+		"Deception",
+		"Insight",
+		"Intimidation",
+		"Investigation",
+		"Perception",
+		"Performance",
+		"Persuasion",
+		"Sleight of Hand",
+		"Stealth"
 	],
-	"saving_throws": [
-		{
-			"index": "str",
-			"name": "STR",
-			"url": "/api/ability-scores/str"
-		},
-		{
-			"index": "con",
-			"name": "CON",
-			"url": "/api/ability-scores/con"
-		}
+	"proficiencyBonuses": [
+		2,
+		2,
+		2,
+		2,
+		3,
+		3,
+		3,
+		3,
+		4,
+		4,
+		4,
+		4,
+		5,
+		5,
+		5,
+		5,
+		6,
+		6,
+		6,
+		6
 	],
-	"starting_equipment": [
-		{
-			"equipment": {
-				"index": "explorers-pack",
-				"name": "Explorer's Pack",
-				"url": "/api/equipment/explorers-pack"
-			},
-			"quantity": 1
-		},
-		{
-			"equipment": {
-				"index": "javelin",
-				"name": "Javelin",
-				"url": "/api/equipment/javelin"
-			},
-			"quantity": 4
-		}
-	],
-	"starting_equipment_options": [
-		{
-			"desc": "(a) a greataxe or (b) any martial melee weapon",
-			"choose": 1,
-			"type": "equipment",
-			"from": {
-				"option_set_type": "options_array",
-				"options": [
-					{
-						"option_type": "counted_reference",
-						"count": 1,
-						"of": {
-							"index": "greataxe",
-							"name": "Greataxe",
-							"url": "/api/equipment/greataxe"
-						}
-					},
-					{
-						"option_type": "choice",
-						"choice": {
-							"desc": "any martial melee weapon",
-							"choose": 1,
-							"type": "equipment",
-							"from": {
-								"option_set_type": "equipment_category",
-								"equipment_category": {
-									"index": "martial-melee-weapons",
-									"name": "Martial Melee Weapons",
-									"url": "/api/equipment-categories/martial-melee-weapons"
-								}
-							}
-						}
-					}
-				]
-			}
-		},
-		{
-			"desc": "(a) two handaxes or (b) any simple weapon",
-			"choose": 1,
-			"type": "equipment",
-			"from": {
-				"option_set_type": "options_array",
-				"options": [
-					{
-						"option_type": "counted_reference",
-						"count": 2,
-						"of": {
-							"index": "handaxe",
-							"name": "Handaxe",
-							"url": "/api/equipment/handaxe"
-						}
-					},
-					{
-						"option_type": "choice",
-						"choice": {
-							"desc": "any simple weapon",
-							"choose": 1,
-							"type": "equipment",
-							"from": {
-								"option_set_type": "equipment_category",
-								"equipment_category": {
-									"index": "simple-weapons",
-									"name": "Simple Weapons",
-									"url": "/api/equipment-categories/simple-weapons"
-								}
-							}
-						}
-					}
-				]
-			}
-		}
-	],
-	"class_levels": "/api/classes/barbarian/levels",
-	"multi_classing": {
-		"prerequisites": [
-			{
-				"ability_score": {
-					"index": "str",
-					"name": "STR",
-					"url": "/api/ability-scores/str"
-				},
-				"minimum_score": 13
-			}
-		],
-		"proficiencies": [
-			{
-				"index": "shields",
-				"name": "Shields",
-				"url": "/api/proficiencies/shields"
-			},
-			{
-				"index": "simple-weapons",
-				"name": "Simple Weapons",
-				"url": "/api/proficiencies/simple-weapons"
-			},
-			{
-				"index": "martial-weapons",
-				"name": "Martial Weapons",
-				"url": "/api/proficiencies/martial-weapons"
-			}
-		]
-	},
-	"subclasses": [
-		{
-			"index": "berserker",
-			"name": "Berserker",
-			"url": "/api/subclasses/berserker"
-		}
-	],
-	"url": "/api/classes/barbarian"
+	"choices": 4,
+	"index": "rogue",
+	"name": "Rogue",
+	"url": "/api/classes/rogue"
 }
+
+const abilityScores: string[] = [
+	"Strength",
+	"Constitution",
+	"Dexterity",
+	"Charisma",
+	"Intelligence",
+	"Wisdom"
+]
+
+const Init_RawAbilities: RawAbilityScore[] = []
 
 const ClassDisplay = (props: any) => {
 
 	//data is what is returned from axios
 	const [data, updateData] = useState(Default_Data);
-
+	const [abilities, updateAbilities] = useState(Init_RawAbilities)
+ 
 	useEffect(() => {
 		getData()
 	}, [props.className])
@@ -316,16 +113,25 @@ const ClassDisplay = (props: any) => {
 	useEffect(() => {
 		getData()
 	}, [])
+	
 
 	const getData = () => {
-		axios.get("http://localhost:8080/classinfo?name=" + props.className.toLowerCase())
+		axios.get("http://localhost:8080/getabilities")
 		.then((response) => {
-			updateData(response.data)
-			props.updater(
-				{abilityScores: getAbilityScoreObjects(response.data.saving_throws),
-				skillProficiencies: [],
-				hitDie: response.data.hit_die
+			updateAbilities(response.data)
+			const abilities: any = response.data
+	
+			axios.get("http://localhost:8080/classinfo?name=" + props.className.toLowerCase())
+			.then((response) => {
+				updateData(response.data)
 
+				props.updater(
+					{
+						abilityScores: getAbilityScoreObjects(response.data.abilityScores, abilities),	
+						skillProficiencies: [],
+						hitDie: response.data.hitDie
+					}
+				)
 			})
 		})
 	}
@@ -334,29 +140,59 @@ const ClassDisplay = (props: any) => {
 		props.updater({skillProficiencies: skills})
 	}
 
-	const getAbilityScoreObjects = (abScores: any) => {
+	const getAbilityScoreObjects = (abScores: any, basicAbilities: any) => {
+		const usedAbilities: string[] = []
 		const result: AbilityScore[] = []
 		for(let i = 0; i < abScores.length; i++) {
-			const scoreData: any = abScores[i]
-			const temp: AbilityScore = {
-				name: getFullSkillName(scoreData.name),
-				index: scoreData.index,
-				url: scoreData.url,
-				score: 0,
-				isSavingThrow: true
-			}
-
-			result.push(temp)
+			result.push(createAbilityScore(abScores[i], false))
+			usedAbilities.push(
+				getShortSkillName(abScores[i].toLowerCase())
+			)
 		}
+
+		//now add the ability scores that aren't saving throws
+		for( let i = 0; i < basicAbilities.length; i++ ) {
+			if( !usedAbilities.includes(basicAbilities[i].name.toLowerCase()) ) {
+				result.push(createAbilityScore(basicAbilities[i].name, false))
+			}
+		}
+
 		return result
 	}
+
+	const createAbilityScore = (abScore: any, savingThrow: boolean) => {
+		const temp: AbilityScore = {
+			name: getFullSkillName(abScore),
+			score: Math.floor(Math.random() * (20 - 10 + 1	)) + 10,
+			isSavingThrow: savingThrow,
+			bonus: 0,
+			modifier: 0
+		}
+		return temp
+	}
+
+	const updateLevel = (event: ChangeEvent) => {
+        let el = event.target as HTMLSelectElement;
+        let val = el.value
+
+        if (val != null) {
+            //setClassName(val)
+            props.updater(
+                {level: data.proficiencyBonuses[parseInt(val)-1]}
+            )
+        }
+	}
+
+
 
     return (
 		<div className="block-display">
 			<h1>The class info for {data.name} is:</h1>
 			<div className="flex-display">
-				<div>Hit Die: d{data.hit_die}</div>
-
+				<div>Hit Die: d{data.hitDie}</div>
+				<select onChange={updateLevel}>
+					{[...Array(20).keys()].map((level: number) => <option>{level + 1}</option>)}
+				</select>
 			</div>
 			<div className="flex-display">
 				<div>
@@ -365,14 +201,14 @@ const ClassDisplay = (props: any) => {
 						Saving Throws
 					</span>
 					<p>You will have a better chance of escaping using the following skills.</p>
-					<SkillList skills={getSavingThrows(data.saving_throws)} addProficiency={false} checkable={false} />
+					<SkillList skills={getSavingThrows(data.abilityScores)} addProficiency={false} checkable={false} />
 				</div>
 				<div>
 					<span data-tip={"Your skill proficiencies determine your strengths and weaknesses. For example, deception determines how effectively you can stretch the truth."}>
 						Skill Proficiencies
 					</span>
-					<p>Choose {data.proficiency_choices[0].choose} of the following skills to become better at than others.</p> 
-					<SkillList skills={getSkills(data.proficiency_choices[0])} addProficiency={true} checkable={true} updater={updateSkills}/>
+					<p>Choose {data.choices} of the following skills to become better at than others.</p> 
+					<SkillList skills={getSkills(data.skillProficiencies)} addProficiency={true} checkable={true} updater={updateSkills}/>
 				</div>
 			</div>
 		</div>
