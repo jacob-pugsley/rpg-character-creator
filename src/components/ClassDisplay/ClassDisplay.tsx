@@ -191,7 +191,7 @@ const ClassDisplay = (props: any) => {
 			<div className="flex-display">
 				<div>Hit Die: d{data.hitDie}</div>
 				<select onChange={updateLevel}>
-					{[...Array(20).keys()].map((level: number) => <option>{level + 1}</option>)}
+					{[...Array(20).keys()].map((level: number) => <option key={level}>{level + 1}</option>)}
 				</select>
 			</div>
 			<div className="flex-display">

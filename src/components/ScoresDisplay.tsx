@@ -155,15 +155,15 @@ const ScoresDisplay = (props: any) => {
                     {abDisplay.abName === "Constitution" &&
                     <p>There are no skills <br /> associated with Constitution.</p>}
 
-                    {abDisplay.skills.map((skill: any) => 
-                        <ul className="abilityBoxUl">
-   
+
+                    <ul className="abilityBoxUl">   
+                        {abDisplay.skills.map((skill: any) => 
                             <li key={skill.skillName}>
                                 {skill.skillName} +{abDisplay.abModifier + 
                                 skill.isProficient ? 2 : 0}
                             </li>
-                        </ul>
-                    )}
+                        )}
+                    </ul>
                 </div>
             </div>
             )}
