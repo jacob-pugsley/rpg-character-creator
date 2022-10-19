@@ -145,32 +145,46 @@ const ScoresDisplay = (props: any) => {
     }
 
     return (
-        <div className="abilityBoxHolder">
+        <div>
+            <div className="abilityBoxHolder">
 
-            {abilityDisplay.map((abDisplay: AbilityDisplay) =>
-            <div key={abDisplay.abName}>
-                <p className="abilityTitleP">
-                    {abDisplay.abName} {isNaN(abDisplay.abScore) ? 0 : abDisplay.abScore} {abDisplay.abBonus != 0 && "+" + abDisplay.abBonus} <br />&nbsp;&nbsp;
-                    <b>({(abDisplay.abModifier >= 0 ? "+" : "") + abDisplay.abModifier})</b>
-                </p> 
-                <div className={"abilityBox " + abDisplay.displayColor}>
-                    {abDisplay.abName === "Constitution" &&
-                    <p>There are no skills <br /> associated with Constitution.</p>}
+                {abilityDisplay.map((abDisplay: AbilityDisplay) =>
+                <div key={abDisplay.abName}>
+                    <p className="abilityTitleP">
+                        {abDisplay.abName} {isNaN(abDisplay.abScore) ? 0 : abDisplay.abScore} {abDisplay.abBonus != 0 && "+" + abDisplay.abBonus} <br />&nbsp;&nbsp;
+                        <b>({(abDisplay.abModifier >= 0 ? "+" : "") + abDisplay.abModifier})</b>
+                    </p> 
+                    <div className={"abilityBox " + abDisplay.displayColor}>
+                        {abDisplay.abName === "Constitution" &&
+                        <p>There are no skills <br /> associated with Constitution.</p>}
 
 
-                    <ul className="abilityBoxUl">   
-                        {abDisplay.skills.map((skill: any) => 
-                            <li key={skill.skillName}
-                                className={skill.isProficient ? "proficientSkill" : ""}
-                            >
-                                {skill.skillName} {(abDisplay.abModifier >= 0 ? "+" : "")} {abDisplay.abModifier + 
-                                (skill.isProficient ? props.level : 0)}
-                            </li>
-                        )}
-                    </ul>
+                        <ul className="abilityBoxUl">   
+                            {abDisplay.skills.map((skill: any) => 
+                                <li key={skill.skillName}
+                                    className={skill.isProficient ? "proficientSkill" : ""}
+                                >
+                                    {skill.skillName} {(abDisplay.abModifier >= 0 ? "+" : "")} {abDisplay.abModifier + 
+                                    (skill.isProficient ? props.level : 0)}
+                                </li>
+                            )}
+                        </ul>
+                    </div>
                 </div>
+                )}
             </div>
-            )}
+                                        
+            <p>
+                The first number represents your raw ability score and any bonuses
+                provided by your race.
+                <br /><br />
+                The bold number in parenthesis represents your ability score modifier, derived from
+                the raw score. This is what you will add to any skill checks you make.
+                <br /><br />
+                The bold skills are ones which you are proficient in, i.e. have your proficiency bonus
+                added to.
+            </p>
+
         </div>
 
     )

@@ -11,14 +11,23 @@ const CharacterCards = (props: any) => {
     const raceData: CharacterRace = props.characterRace
     const backgroundData: CharacterBackground = props.characterBackground
 
+    const [charName, setCharName] = useState("")
+
     const [abilityScores, setAbilityScores] = useState([] as number[])
     const updateAbilityScores = (arr: number[]) => {
         setAbilityScores(arr)
     }
 
+    const updateCharName = (event: ChangeEvent) => {
+        let el: HTMLInputElement = event.target as HTMLInputElement
+        const val: string = el.value
+
+        setCharName(val)
+    }
+
     return (
         <div>
-            <h3>Name</h3>
+            <input type="text" placeholder="Name" onChange={updateCharName}/>
             <h4>the {raceData.raceName} {classData.className}</h4>
             
             <p id="abilitiesInfoP">
