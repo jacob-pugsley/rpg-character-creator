@@ -190,7 +190,7 @@ const CreateCharacter = () => {
         case 2: 
             return (
                 <div>
-                    <CharacterCards characterClass={selectedClass} characterRace={selectedRace} characterBackground={selectedBackground}/>
+                    <CharacterCards characterClass={selectedClass} characterRace={selectedRace} characterBackground={selectedBackground} rolls={rolls}/>
                     <h3>Choose your class, race, and background</h3>
                     <p>Your class determines the job or role your character plays in society. Are they a powerful wizard? A thieving rogue? Or a musical bard?</p>
                     <select onChange={onSelectClass}>

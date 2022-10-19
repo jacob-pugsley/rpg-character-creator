@@ -178,7 +178,7 @@ const ClassDisplay = (props: any) => {
         if (val != null) {
             //setClassName(val)
             props.updater(
-                {level: data.proficiencyBonuses[parseInt(val)-1]}
+                {level: data.proficiencyBonuses[parseInt(val)]}
             )
         }
 	}
@@ -191,7 +191,7 @@ const ClassDisplay = (props: any) => {
 			<div className="flex-display">
 				<div>Hit Die: d{data.hitDie}</div>
 				<select onChange={updateLevel}>
-					{[...Array(20).keys()].map((level: number) => <option key={level}>{level + 1}</option>)}
+					{[...Array.from({length: 20}, (_, i) => i + 1).keys()].map((level: number) => <option key={level}>{level + 1}</option>)}
 				</select>
 			</div>
 			<div className="flex-display">

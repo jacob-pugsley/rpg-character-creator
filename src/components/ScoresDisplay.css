@@ -29,6 +29,10 @@
     padding-left: 1px;
 }
 
+.proficientSkill {
+    font-weight: bold;
+}
+
 .abilityBox.gray {
     border: 2px solid gray;
 }
