@@ -4,7 +4,10 @@ import { Character, CharacterBackground, CharacterClass, CharacterRace } from ".
 import BackgroundDisplay from "./BackgroundDisplay"
 import CharacterCards from "./CharacterCards"
 import ClassDisplay from "./ClassDisplay/ClassDisplay"
+import DiceRoller from "./DiceRoller"
 import RaceDisplay from "./RaceDisplay/RaceDisplay"
+
+import "./CreateCharacter.css"
 
 const Init_Stat_Rolls: number[] = []
 
@@ -101,31 +104,54 @@ const CreateCharacter = () => {
     }
 
 
-    const handleRoll = () => {
-        setRollCount((prevState) => {
-            return prevState + 1
-        })
-        //roll four random numbers from 1 to 6 inclusive
-        let minRoll = 7 //max value + 1
-        let sumOfRolls = 0
+    // const handleRoll = () => {
+    //     setRollCount((prevState) => {
+    //         return prevState + 1
+    //     })
+    //     //roll four random numbers from 1 to 6 inclusive
+    //     let minRoll = 7 //max value + 1
+    //     let sumOfRolls = 0
 
-        for (let i = 0; i < 4; i++) {
-            let roll = Math.round(Math.random() * 5 + 1)
+    //     for (let i = 0; i < 4; i++) {
+    //         let roll = Math.round(Math.random() * 5 + 1)
 
-            if( roll == 1 ) {
-                roll = Math.round(Math.random() * 5 + 1)
+    //         if( roll == 1 ) {
+    //             roll = Math.round(Math.random() * 5 + 1)
+    //         }
+
+    //         if (roll < minRoll) {
+    //             minRoll = roll
+    //         }
+
+    //         sumOfRolls += roll
+    //     }
+
+    //     sumOfRolls -= minRoll
+
+    //     setRolls((prevState) => prevState ? [...prevState, sumOfRolls] : [sumOfRolls])
+    // }
+
+    const updateRolls = (rolls: number[]) => {
+
+        //sum up the rolls and subtract the lowest value
+        let lowest: number = 99
+        let sum: number = 0
+
+        for( let i = 0; i < rolls.length; i++ ) {
+            sum += rolls[i]
+            if( rolls[i] < lowest ) {
+                lowest = rolls[i]
             }
-
-            if (roll < minRoll) {
-                minRoll = roll
-            }
-
-            sumOfRolls += roll
         }
 
-        sumOfRolls -= minRoll
+        sum -= lowest
 
-        setRolls((prevState) => prevState ? [...prevState, sumOfRolls] : [sumOfRolls])
+        setRolls((prevState: number[]) => {
+            if( prevState.length === 0 ) {
+                return [sum]
+            }
+            return [...prevState, sum]
+        })
     }
 
     const onSelectClass = (event: ChangeEvent) => {
@@ -175,16 +201,34 @@ const CreateCharacter = () => {
                     <p>Roll 4d6 for each of your six basic stats, rerolling any 1s once, then dropping the lowest value. 
                         This number will be assigned to one of your basic stats later.</p>
 
-                    {rollCount < 6 ? <button onClick={handleRoll}>Roll a d6</button> : <p>Done rolling!</p>}
+                    <div id="diceRollerHolder">
+                        <DiceRoller diceType={6} diceCount={4} updater={updateRolls} rerollOnes={true}/>
+
+                        <DiceRoller diceType={6} diceCount={4} updater={updateRolls} rerollOnes={true}/>
+                    </div>
+
+                    <div id="diceRollerHolder">
+                        <DiceRoller diceType={6} diceCount={4} updater={updateRolls} rerollOnes={true}/>
+
+                        <DiceRoller diceType={6} diceCount={4} updater={updateRolls} rerollOnes={true}/>
+                    </div>
+
+                    <div id="diceRollerHolder">
+                        <DiceRoller diceType={6} diceCount={4} updater={updateRolls} rerollOnes={true}/>
+
+                        <DiceRoller diceType={6} diceCount={4} updater={updateRolls} rerollOnes={true}/>
+                    </div>
+                    
 
                     <h4>Rolls:</h4>
-                    <ul>
-                        {rolls.map((roll) =>
-                            <li key={Math.random()}>{roll}</li>
-                        )}
-                    </ul>
 
-                    {rollCount >= 6 && <button onClick={nextStep}>Move on to the next step</button>}
+                    <p>                        
+                        {rolls.map((roll) =>
+                            <span key={Math.random()}>{roll}&nbsp;&nbsp;</span>
+                        )}
+                    </p>
+
+                    {rolls.length >= 6 && <button onClick={nextStep}>Move on to the next step</button>}
                 </div>
             )
         case 2: 

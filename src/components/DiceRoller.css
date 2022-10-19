@@ -1,0 +1,12 @@
+#diceDiv {
+    display: flex;
+
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#diceDiv img {
+    margin: auto;
+    margin-right: 10px;
+    width: 100px;
+}
