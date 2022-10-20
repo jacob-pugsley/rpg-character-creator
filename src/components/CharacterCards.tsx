@@ -31,24 +31,23 @@ const CharacterCards = (props: any) => {
             <h4>the {raceData.raceName} {classData.className}</h4>
             
             <p id="abilitiesInfoP">
-                Your ability scores determine how good your character is at performing
-                certain actions. A high Intelligence score will give you advantages in
+                Your <b>ability scores</b> determine how good your character is at performing
+                actions within respective skill categories. A high Intelligence score will give you advantages in
                 tasks that require specific knowledge, such as identifying an ancient artifact.
-                A high Charisma will help you to persuade or decieve people.
+                A high Charisma will help you to persuade or deceive people.
                 <br /><br />
-                Certain races provide you wil ability score bonuses, which are added to the
+                Certain races provide you with <b>ability score bonuses</b>, which are added to the
                 raw score before the skill modifier is calculated. For example, the 
                 Dragonborn race provides +2 to Strength and +1 to Charisma. 
                 <br /><br />
                 Your Constitution score is not used for skill checks. The DM may ask you
-                to make a general Constitution check to avoid being poisoned, or to avoid becoming
-                intoxicated while drinking at a tavern. This score is also used to determine
+                to make a general Constitution check to avoid being poisoned or affected by a spell. This score is also used to determine
                 your hit points at each level.
                 <br /><br />
-                Your actual skill bonuses are determined using the raw ability score by
+                Your <b>skill modifiers</b> are determined using the raw ability score by
                 subtracting 10 and dividing by two. These numbers will be added to any rolls
                 you make with the respective skill. For example, if the DM asks you to make
-                an Arcana check, you will roll a d20 then add the skill modifier.
+                an Arcana check, you will roll a d20 and add your Intelligence modifier.
                 <br /><br />
                 Now, assign one of the six rolls you made to each of the abilities:
             </p>
