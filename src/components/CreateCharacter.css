@@ -11,3 +11,19 @@
 #diceRollerHolder div {
     margin: 10px;
 }
+
+p {
+    text-align: justify;
+    width: fit-content;
+    max-width: 75%;
+}
+
+.contentP {
+    margin: auto;
+}
+
+.titleP {
+    margin: 0 auto 0 0;
+    font-size: 20pt;
+    font-weight: bold;
+}

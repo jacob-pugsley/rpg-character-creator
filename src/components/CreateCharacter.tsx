@@ -199,7 +199,7 @@ const CreateCharacter = () => {
             return (
                 <div>
                     <h3>Roll your initial stats</h3>
-                    <p>Roll 4d6 for each of your six basic stats, rerolling any 1s once, then dropping the lowest value. 
+                    <p className="contentP">Roll 4d6 for each of your six basic stats, rerolling any 1s once, then dropping the lowest value. 
                         This number will be assigned to one of your basic stats later.</p>
 
                     <div id="diceRollerHolder">
@@ -223,7 +223,7 @@ const CreateCharacter = () => {
 
                     <h4>Rolls:</h4>
 
-                    <p>                        
+                    <p className="contentP">                        
                         {rolls.map((roll) =>
                             <span key={Math.random()}>{roll}&nbsp;&nbsp;</span>
                         )}
@@ -237,31 +237,12 @@ const CreateCharacter = () => {
                 <div>
                     <CharacterCards characterClass={selectedClass} characterRace={selectedRace} characterBackground={selectedBackground} rolls={rolls}/>
                     <h3>Choose your class, race, and background</h3>
-                    <p>Your class determines the job or role your character plays in society. Are they a powerful wizard? A thieving rogue? Or a musical bard?</p>
-                    <select onChange={onSelectClass}>
-                        {Classes.map((c) => <option key={c}>{c}</option>)}
-                    </select>
 
-                    <ClassDisplay className={selectedClass.className} updater={updateClass}/>
+                    <ClassDisplay className={selectedClass.className} updater={updateClass} classlist={Classes}/>
 
-                    <p>Your race determines some of your character's abilities as well as your size, movement speed, and the languages you speak.</p>
-                    <select onChange={onSelectRace}>
-                        {Races.map((c) => <option key={c}>{c}</option>)}
-                    </select>
+                    <RaceDisplay raceName={selectedRace.raceName} updater={updateRace} racelist={Races}/>
 
-                    <RaceDisplay raceName={selectedRace.raceName} updater={updateRace}/>
-
-
-                    <p>Your background provides more specifics on what your character does and what kind of experiences they've had. 
-                        Specifically, it provides you with more languages, skill proficiencies, and items.</p>
-
-                    <select onChange={onSelectBackground}>
-                        {Backgrounds.map((bg: string) => <option key={bg}>{bg}</option>)}
-                    </select>
-            
-
-                    <BackgroundDisplay backgroundName={selectedBackground.backgroundName} updater={updateBackground} />
-
+                    <BackgroundDisplay backgroundName={selectedBackground.backgroundName} updater={updateBackground} backgroundlist={Backgrounds}/>
 
                     <button onClick={nextStep}>Confirm selections and move on.</button>
 

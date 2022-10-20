@@ -1,11 +1,10 @@
 import { useState, useEffect, ChangeEvent } from "react"
 import Axios from "axios"
 import SkillList, { getShortSkillName } from "../SkillList"
-
-import "./ClassDisplay.css"
 import { AbilityScore, RawAbilityScore } from "../../interfaces/AbilityScore"
 import { CharacterClass } from "../../interfaces/CharacterInterfaces"
 import { create } from "domain"
+import CharacterInfoDisplay from "../CharacterInfoDisplay"
 
 /* eslint-disable */
 const axios = Axios.create()
@@ -127,9 +126,8 @@ const ClassDisplay = (props: any) => {
 
 
     return (
-		<div className="block-display">
-			<h1>The class info for {props.className} is:</h1>
-			<div className="flex-display">
+		<CharacterInfoDisplay title={`Class: ${props.className}`} namelist={props.classlist} titleContent={
+			<div>
 				<div>Hit Die: d{data.hitDie}</div>
 				<div>
 					<span>Level: </span>
@@ -138,23 +136,31 @@ const ClassDisplay = (props: any) => {
 					</select>
 				</div>
 			</div>
-			<div className="flex-display">
-				<div>
-					<span>
-						Saving Throws
-					</span>
-					<p>You will have a better chance of escaping using the following skills.</p>
-					{data.abilityScores !== undefined && <SkillList skills={getSavingThrows(data.abilityScores)} addProficiency={false} checkable={false} />}
-				</div>
-				<div>
-					<span >
-						Skill Proficiencies
-					</span>
-					<p>Choose {data.proficiencyChoices} of the following skills to become better at than others.</p> 
-					{data.skillProficiencies !== undefined && <SkillList skills={getSkills(data.skillProficiencies)} addProficiency={true} checkable={true} updater={updateSkills}/>}
-				</div>
+			}
+			infotext={
+				"Your class determines the job or role your character plays in society. Are they a powerful wizard? A thieving rogue? Or a musical bard?"
+			}
+		>
+			<div className="skillListContainerLeft">
+				<span>
+					Saving Throws
+				</span><br /><br />
+				<p className="contentP">A <b>saving throw</b> or save is a skill check you make to avoid a bad outcome. The DM may ask you to make a Dexterity save
+				if you trigger a trap, or a Wisdom save to avoid a magical effect. You may add your proficiency bonus to saves you make with the following
+				abilities:
+				</p><br /><br />
+				{data.abilityScores !== undefined && <SkillList skills={getSavingThrows(data.abilityScores)} addProficiency={false} checkable={false} />}
 			</div>
-		</div>
+			<div className="skillListContainerRight">
+				<span >
+					Skill Proficiencies
+				</span><br /><br />
+				<p className="contentP">Your <b>skill proficiencies</b> are skills that you are particularly good at. Think about the skills that would best fit
+				your character's background as well as your own play style. Choose {data.proficiencyChoices} of the following skills:</p>
+				<br /><br /><br /> 
+				{data.skillProficiencies !== undefined && <SkillList skills={getSkills(data.skillProficiencies)} addProficiency={true} checkable={true} updater={updateSkills}/>}
+			</div>
+		</CharacterInfoDisplay>
 	)
 
 

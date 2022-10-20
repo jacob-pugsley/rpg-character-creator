@@ -30,7 +30,7 @@ const CharacterCards = (props: any) => {
             <input type="text" placeholder="Name" onChange={updateCharName}/>
             <h4>the {raceData.raceName} {classData.className}</h4>
             
-            <p id="abilitiesInfoP">
+            <p className="contentP reactive-keywords">
                 Your <b>ability scores</b> determine how good your character is at performing
                 actions within respective skill categories. A high Intelligence score will give you advantages in
                 tasks that require specific knowledge, such as identifying an ancient artifact.
@@ -49,6 +49,9 @@ const CharacterCards = (props: any) => {
                 you make with the respective skill. For example, if the DM asks you to make
                 an Arcana check, you will roll a d20 and add your Intelligence modifier.
                 <br /><br />
+                Your <b>proficiency bonus</b> is a number determined by your character level which will be added to checks you make
+                with skills and tools you have proficiency with, as determined by your class.
+                <br /><br />
                 Now, assign one of the six rolls you made to each of the abilities:
             </p>
             <RollSelector rolls={props.rolls} updater={updateAbilityScores}/>
@@ -64,6 +67,7 @@ const CharacterCards = (props: any) => {
 
                 abilityScores={abilityScores}
             />
+
             <br />
             <span>Languages you can speak and read:</span>
             <ul>

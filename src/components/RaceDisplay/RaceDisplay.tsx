@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, ChangeEvent } from "react"
 import Axios from "axios"
 import LanguageList from "../LanguageList"
 import { CharacterRace } from "../../interfaces/CharacterInterfaces"
+import CharacterInfoDisplay from "../CharacterInfoDisplay"
 
 const Default_Data = {
 	"index": "dragonborn",
@@ -110,9 +111,22 @@ function getLanguages(languages: any) {
     return langList
 }
 
+
 const RaceDisplay = (props: any) => {
 
     const [data, updateData] = useState(Default_Data);
+
+	const onSelectRace = (event: ChangeEvent) => {
+		let el = event.target as HTMLSelectElement;
+		let val = el.value
+	
+		if (val != null) {
+			props.updater(
+				{raceName: val}
+			)
+		}
+	}
+	
 
 	useEffect(() => {
 		getData()
@@ -136,41 +150,28 @@ const RaceDisplay = (props: any) => {
 	}
 
     return (
-        <div>
-			<div className="block-display">
-			<h1>The racial traits for {props.raceName} are:</h1>
-			<div className="flex-display">
-				<div>Height/weight</div>
+		<CharacterInfoDisplay title={`Race: ${props.raceName}`} namelist={props.racelist} 
+			infotext="Your race determines some of your character's abilities as well as your size, movement speed, and the languages you speak."
+		>
+			<div className="skillListContainerLeft">
+				<span >
+					Languages
+				</span>
+				<p className="contentP">You will be able to speak and read the following languages by virtue of your chosen race.</p>
+				<br /><br />
+				<LanguageList languages={data.languages} />
 			</div>
 
-			<br />
-			<div className="flex-display">
-				<div>
-					<span >
-						Languages
-					</span>
-					<p>You will be able to speak and read the following languages by virtue of your chosen race.</p>
-					<LanguageList languages={data.languages} />
-				</div>
-
-				<div>
-					<span >Ability Score Bonuses</span>
-					<p>Your chosen race gives you some innate advantages in the form of ability bonuses.</p>
-					<ul>
-						{getAbilityBonuses(data.ability_bonuses).map((ability) => <li key={ability.name}>{ability.bonus} to {ability.name}</li>)}
-					</ul>
-				</div>
+			<div className="skillListContainerRight">
+				<span >Ability Score Bonuses</span>
+				<p className="contentP">Your chosen race gives you some innate advantages in the form of ability bonuses.</p>
+				<br />
+				<ul>
+					{getAbilityBonuses(data.ability_bonuses).map((ability) => <li key={ability.name}>{ability.bonus} to {ability.name}</li>)}
+				</ul>
 			</div>
-		</div>
-
-			
-
-
-
-        </div>
+		</CharacterInfoDisplay>
     )
-
-
 }
 
 export default RaceDisplay

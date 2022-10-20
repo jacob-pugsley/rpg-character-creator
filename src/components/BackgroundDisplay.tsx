@@ -1,6 +1,7 @@
 import Axios from 'axios'
 import { useEffect, useState } from 'react'
 import ReactTooltip from 'react-tooltip'
+import CharacterInfoDisplay from './CharacterInfoDisplay'
 import SkillList from './SkillList'
 
 const Default_Data: any = {"index": "acolyte", "name": "Acolyte", "url": "/api/backgrounds/acolyte", "skills":["Insight","Religion"]}
@@ -32,24 +33,16 @@ const BackgroundDisplay = (props: any) => {
     }
 
     return (
-        <div>
-            <ReactTooltip delayHide={5} />
-            <div className="block-display">
-                <h1>The background traits for {props.backgroundName} are:</h1>
-                <div className="flex-display">
-                    <div>Height/weight</div>
-                </div>
-
-                <br />
-                <div className="flex-display">
-                    <div>
-                        <span >Skill Proficiencies</span>
-                        <p>Your chosen background gives you some innate advantages in the form of extra skill proficiencies.</p>
-                        <SkillList skills={data.skills} addProficiency={false} />
-                    </div>
-                </div>
+        <CharacterInfoDisplay title={`Background: ${props.backgroundName}`} namelist={props.backgroundlist} 
+            infotext="Your background provides more specifics on what your character does and what kind of experiences they've had. 
+            Specifically, it provides you with more languages, skill proficiencies, and items."
+        >
+            <div>
+                <span >Skill Proficiencies</span>
+                <p>Your chosen background gives you some innate advantages in the form of extra skill proficiencies.</p>
+                <SkillList skills={data.skills} addProficiency={false} />
             </div>
-        </div>
+        </CharacterInfoDisplay>
 
     )
 

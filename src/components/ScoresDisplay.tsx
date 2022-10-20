@@ -188,18 +188,6 @@ const ScoresDisplay = (props: any) => {
                 </div>
                 )}
             </div>
-                                        
-            <p>
-                The first number represents your raw ability score and any bonuses
-                provided by your race.
-                <br /><br />
-                The bold number in parenthesis represents your ability score modifier, derived from
-                the raw score. This is what you will add to any skill checks you make.
-                <br /><br />
-                The bold skills are ones which you are proficient in, i.e. have your proficiency bonus
-                added to.
-            </p>
-
         </div>
 
     )
