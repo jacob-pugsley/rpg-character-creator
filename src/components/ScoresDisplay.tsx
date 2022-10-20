@@ -40,6 +40,21 @@ const ScoresDisplay = (props: any) => {
 
     const abilityScores: number[] = props.abilityScores
 
+    const proficiencyBonus = () => {
+        const lvl: number = props.level
+        if (lvl < 4) {
+            return 2
+        } else if (lvl < 8) {
+            return 3
+        } else if (lvl < 12) {
+            return 4
+        } else if (lvl < 16) {
+            return 5
+        } else {
+            return 6
+        }
+    }
+
 
     const updateAbilityDisplay = (abDisplay: AbilityDisplay) => {
         setAbilityDisplay((prevState) => {
@@ -165,7 +180,7 @@ const ScoresDisplay = (props: any) => {
                                     className={skill.isProficient ? "proficientSkill" : ""}
                                 >
                                     {skill.skillName} {(abDisplay.abModifier >= 0 ? "+" : "")} {abDisplay.abModifier + 
-                                    (skill.isProficient ? props.level : 0)}
+                                    (skill.isProficient ? proficiencyBonus() : 0)}
                                 </li>
                             )}
                         </ul>

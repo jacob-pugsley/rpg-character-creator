@@ -61,7 +61,6 @@ const Init_Class: CharacterClass = {
     abilityScores: [],
     skillProficiencies: [],
     proficiencyChoices: 0,
-    proficiencyBonuses: [],
     level: 1
 }
 

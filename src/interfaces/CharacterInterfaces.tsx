@@ -13,7 +13,6 @@ export interface CharacterClass {
     hitDie: number, //hit die e.g. 8, 6
     abilityScores: AbilityScore[], //saving throws e.g. Strength, Dexterity
     proficiencyChoices: number, //the number of skill proficiencies that can be chosen
-    proficiencyBonuses: number[],
     skillProficiencies: string[], //proficiencies e.g. Acrobatics, Stealth
     level: number
 }

@@ -41,70 +41,12 @@ const getSavingThrows = (savingThrows: any) => {
 	
 }
 
-//hardcode the data for a barbarian here to avoid data being undefined
-const Default_Data = {
-	"hitDie": 8,
-	"abilityScores": [
-		"DEX",
-		"INT"
-	],
-	"skillProficiencies": [
-		"Acrobatics",
-		"Athletics",
-		"Deception",
-		"Insight",
-		"Intimidation",
-		"Investigation",
-		"Perception",
-		"Performance",
-		"Persuasion",
-		"Sleight of Hand",
-		"Stealth"
-	],
-	"proficiencyBonuses": [
-		2,
-		2,
-		2,
-		2,
-		3,
-		3,
-		3,
-		3,
-		4,
-		4,
-		4,
-		4,
-		5,
-		5,
-		5,
-		5,
-		6,
-		6,
-		6,
-		6
-	],
-	"choices": 4,
-	"index": "rogue",
-	"name": "Rogue",
-	"url": "/api/classes/rogue"
-}
-
-const abilityScores: string[] = [
-	"Strength",
-	"Constitution",
-	"Dexterity",
-	"Charisma",
-	"Intelligence",
-	"Wisdom"
-]
-
 const Init_RawAbilities: RawAbilityScore[] = []
 
 const ClassDisplay = (props: any) => {
 
 	//data is what is returned from axios
 	const [data, updateData] = useState({} as CharacterClass);
-	const [abilities, updateAbilities] = useState(Init_RawAbilities)
  
 	useEffect(() => {
 		getData()
@@ -118,7 +60,6 @@ const ClassDisplay = (props: any) => {
 	const getData = () => {
 		axios.get("http://localhost:8080/getabilities")
 		.then((response) => {
-			updateAbilities(response.data)
 			const abilities: any = response.data
 	
 			axios.get("http://localhost:8080/classinfo?name=" + props.className.toLowerCase())
@@ -177,9 +118,8 @@ const ClassDisplay = (props: any) => {
         let val = el.value
 
         if (val != null) {
-            //setClassName(val)
             props.updater(
-                {level: data.proficiencyBonuses[parseInt(val)]}
+                {level: parseInt(val) - 1}
             )
         }
 	}
@@ -188,12 +128,15 @@ const ClassDisplay = (props: any) => {
 
     return (
 		<div className="block-display">
-			<h1>The class info for {data.className} is:</h1>
+			<h1>The class info for {props.className} is:</h1>
 			<div className="flex-display">
 				<div>Hit Die: d{data.hitDie}</div>
-				<select onChange={updateLevel}>
-					{[...Array.from({length: 20}, (_, i) => i + 1).keys()].map((level: number) => <option key={level}>{level + 1}</option>)}
-				</select>
+				<div>
+					<span>Level: </span>
+					<select onChange={updateLevel}>
+						{[...Array.from({length: 20}, (_, i) => i + 1).keys()].map((level: number) => <option key={level}>{level + 1}</option>)}
+					</select>
+				</div>
 			</div>
 			<div className="flex-display">
 				<div>
