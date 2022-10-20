@@ -60,6 +60,8 @@ const Init_Class: CharacterClass = {
     hitDie: 0,
     abilityScores: [],
     skillProficiencies: [],
+    proficiencyChoices: 0,
+    proficiencyBonuses: [],
     level: 1
 }
 

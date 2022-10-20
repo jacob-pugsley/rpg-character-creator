@@ -103,7 +103,7 @@ const Init_RawAbilities: RawAbilityScore[] = []
 const ClassDisplay = (props: any) => {
 
 	//data is what is returned from axios
-	const [data, updateData] = useState(Default_Data);
+	const [data, updateData] = useState({} as CharacterClass);
 	const [abilities, updateAbilities] = useState(Init_RawAbilities)
  
 	useEffect(() => {
@@ -129,6 +129,7 @@ const ClassDisplay = (props: any) => {
 					{
 						abilityScores: getAbilityScoreObjects(response.data.abilityScores, abilities),	
 						skillProficiencies: [],
+						proficiencyChoices: response.data.proficiencyChoices,
 						hitDie: response.data.hitDie
 					}
 				)
@@ -187,7 +188,7 @@ const ClassDisplay = (props: any) => {
 
     return (
 		<div className="block-display">
-			<h1>The class info for {data.name} is:</h1>
+			<h1>The class info for {data.className} is:</h1>
 			<div className="flex-display">
 				<div>Hit Die: d{data.hitDie}</div>
 				<select onChange={updateLevel}>
@@ -200,14 +201,14 @@ const ClassDisplay = (props: any) => {
 						Saving Throws
 					</span>
 					<p>You will have a better chance of escaping using the following skills.</p>
-					<SkillList skills={getSavingThrows(data.abilityScores)} addProficiency={false} checkable={false} />
+					{data.abilityScores !== undefined && <SkillList skills={getSavingThrows(data.abilityScores)} addProficiency={false} checkable={false} />}
 				</div>
 				<div>
 					<span >
 						Skill Proficiencies
 					</span>
-					<p>Choose {data.choices} of the following skills to become better at than others.</p> 
-					<SkillList skills={getSkills(data.skillProficiencies)} addProficiency={true} checkable={true} updater={updateSkills}/>
+					<p>Choose {data.proficiencyChoices} of the following skills to become better at than others.</p> 
+					{data.skillProficiencies !== undefined && <SkillList skills={getSkills(data.skillProficiencies)} addProficiency={true} checkable={true} updater={updateSkills}/>}
 				</div>
 			</div>
 		</div>
