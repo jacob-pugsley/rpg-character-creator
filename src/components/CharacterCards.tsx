@@ -56,7 +56,7 @@ const CharacterCards = (props: any) => {
             </p>
             <RollSelector rolls={props.rolls} updater={updateAbilityScores}/>
             <ScoresDisplay 
-                abScores={classData.abilityScores} 
+                characterClassName={classData.className} 
                 skillProfs={
                     [...classData.skillProficiencies, ...backgroundData.skillProficiencies]
                 }

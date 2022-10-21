@@ -123,10 +123,16 @@ const ClassDisplay = (props: any) => {
         }
 	}
 
+	const onSelectClass = (val: string) => {
+		props.updater(
+			{className: val}
+		)
+    }
+
 
 
     return (
-		<CharacterInfoDisplay title={`Class: ${props.className}`} namelist={props.classlist} titleContent={
+		<CharacterInfoDisplay title={`Class: ${props.className}`} updateSelectedName={onSelectClass} namelist={props.classlist} titleContent={
 			<div>
 				<div>Hit Die: d{data.hitDie}</div>
 				<div>

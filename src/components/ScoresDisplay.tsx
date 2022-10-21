@@ -22,6 +22,15 @@ interface AbilityDisplay {
     ]
 }
 
+const AbilityScoreNames: string[] = [
+    "Strength",
+    "Dexterity",
+    "Constitution",
+    "Charisma",
+    "Wisdom",
+    "Intelligence"
+]
+
 const axios = Axios.create()
 
 const ScoresDisplay = (props: any) => {
@@ -32,11 +41,50 @@ const ScoresDisplay = (props: any) => {
     const skillProfs: string[] = props.skillProfs
     //names of skills that we are proficient in
 
-    const bonuses: AbilityScoreBonus[] = props.abScoreBonuses
+
+
     //list of abilities mapped to bonuses
     const Init_AbDisplay: AbilityDisplay[] = []
 
-    const [abilityDisplay, setAbilityDisplay] = useState(Init_AbDisplay)
+    const getSkillColor = (skillName: string) => {
+		switch( skillName.toLowerCase() ) {
+			case "str": return "gray"
+			case "con": return "red"
+			case "dex": return "yellow"
+			case "wis": return "blue"
+			case "int": return "green"
+			case "cha": return "pink"
+			default: return ""
+		}
+	}
+
+    const [abilityDisplay, setAbilityDisplay] = useState( () =>
+        {
+            let result: AbilityDisplay[] = []
+
+            for( let i = 0; i < AbilityScoreNames.length; i++ ) {
+                const abDisplay: AbilityDisplay = {
+                    abName: AbilityScoreNames[i],
+                    abScore: 0, //these three are set to defaults because they require other properties (separate updates)
+                    abModifier: 0,
+                    abBonus: 0,
+                    displayColor: getSkillColor(getShortSkillName(AbilityScoreNames[i].toLowerCase())),
+    
+                    skills: [{
+                        skillName: "",
+                        isProficient: false
+                    }]
+                }
+                result.push(abDisplay)
+            }
+
+            return result
+        } 
+    )
+
+    if( abilityDisplay === undefined ) {
+        return <div>Could not load ability display.</div>
+    }
 
     const abilityScores: number[] = props.abilityScores
 
@@ -55,21 +103,6 @@ const ScoresDisplay = (props: any) => {
         }
     }
 
-
-    const updateAbilityDisplay = (abDisplay: AbilityDisplay) => {
-        setAbilityDisplay((prevState) => {
-
-            //make sure the update doesn't already exist in the list
-            for( let i = 0; i < prevState.length; i++ ) {
-                if( prevState[i].abName === abDisplay.abName) {
-                    return [...prevState]
-                }
-            }
-            //if it does not, then add it to the end
-            return [...prevState, abDisplay]
-        })
-    }
-
     const makeRequest = () => {
         //get the ability score names from the api
         axios({
@@ -81,57 +114,111 @@ const ScoresDisplay = (props: any) => {
         })
     }
 
-    //first, update the props.abScores with bonuses
+    const setAbilityScores = () => {
+        console.log("at setAbilityScores")
+        console.log(abilityDisplay)
+        console.log(abilityScores)
+        
+        const temp: AbilityDisplay[] = [...abilityDisplay]
+
+        for(let i = 0; i < abilityDisplay.length; i++) {
+            temp[i].abScore = abilityScores[i]    
+        }
+
+        setAbilityDisplay(temp)
+
+    }
+
+    const setAbilityBonuses = () => {
+        const temp: AbilityDisplay[] = [...abilityDisplay]
+
+        for( let i = 0; i < temp.length; i++ ) {
+            let hasBonus: boolean = false
+            for( let j = 0; j < props.bonuses.length; j++ ) {
+                if( props.bonuses[j].name.toLowerCase() === temp[i].abName.toLowerCase()) {
+                    temp[i].abBonus = props.bonuses[j].bonus
+                    hasBonus = true
+                }
+            }
+
+            if( !hasBonus ) {
+                temp[i].abBonus = 0
+            }
+        }
+
+        setAbilityDisplay(temp)
+    }
+
+    const setAbilityModifiers = () => {
+        const temp: AbilityDisplay[] = [...abilityDisplay]
+        for( let i = 0; i < temp.length; i++ ) {
+            
+            temp[i].abModifier = Math.floor(((temp[i].abScore + temp[i].abBonus) - 10) / 2)
+        }
+        setAbilityDisplay(temp)
+    }
+
+    const setSkillProficiencies = () => {
+        const temp: AbilityDisplay[] = [...abilityDisplay]
+        for( let i = 0; i < abilityDisplay.length; i++ ) {
+            //updateDisplayAtIndex({skills:  getSkillsWithProficiencyFromAbility(getShortSkillName(AbilityScoreNames[i]).toLowerCase(), skillProfs, data)}, i)
+            temp[i].skills = getSkillsWithProficiencyFromAbility(getShortSkillName(AbilityScoreNames[i]).toLowerCase(), skillProfs, data)
+        }
+        setAbilityDisplay(temp)
+    }
+
+    const initAbilityDisplays = () => {
+        //create all the ability displays with initial values
+        let result: AbilityDisplay[] = []
+
+        for( let i = 0; i < AbilityScoreNames.length; i++ ) {
+            const abDisplay: AbilityDisplay = {
+                abName: AbilityScoreNames[i],
+                abScore: 0, //these three are set to defaults because they require other properties (separate updates)
+                abModifier: 0,
+                abBonus: 0,
+                displayColor: getSkillColor(getShortSkillName(AbilityScoreNames[i].toLowerCase())),
+
+                skills: [{
+                    skillName: "",
+                    isProficient: false
+                }]
+            }
+            result.push(abDisplay)
+        }
+        console.log("abdisplay")
+        console.log(result)
+
+        
+    }
+
     useEffect(() => {
-        setAbilityDisplay(Init_AbDisplay)
+        initAbilityDisplays()
+
         makeRequest()
     }, [])
 
     useEffect(() => {
-        setAbilityDisplay(Init_AbDisplay)
-        makeRequest();
-    }, [props])
+        setAbilityBonuses()
+        setAbilityModifiers()
+    }, [props.bonuses])
 
     useEffect(() => {
-        for( let j = 0; j < props.abScores.length; j++ ) {
-           
-            //then, create a new ability display object
-            const abDisplay: AbilityDisplay = {
-                abName: props.abScores[j].name,
-                abScore: (abilityScores.length === 0 ? 0 : abilityScores[j]),
-                abModifier: 0,
-                abBonus: 0,
-                displayColor: getSkillColor(getShortSkillName(props.abScores[j].name.toLowerCase())),
+        setSkillProficiencies()
+    }, [props.level])
 
-                skills: getSkillsWithProficiencyFromAbility(getShortSkillName(props.abScores[j].name).toLowerCase(), skillProfs, data)
-            }
+    useEffect(() => {
+        setSkillProficiencies()
+    }, [props.skillProfs])
 
-            for( let i = 0; i < props.bonuses.length; i++ ) {
-                if( props.bonuses[i].name === abDisplay.abName ) {
-                    abDisplay.abBonus = props.bonuses[i].bonus
-                    break
-                }
-            }
+    useEffect(() => {
+        setAbilityScores()
+        setAbilityBonuses()
+        setAbilityModifiers()
+        setSkillProficiencies()
+    }, [props.abilityScores, data])
 
-            //then, calculate the ab score modifier
-            abDisplay.abModifier = Math.floor(((abDisplay.abScore + abDisplay.abBonus) - 10) / 2)
 
-            //and add it to the list
-            updateAbilityDisplay(abDisplay)
-        }
-    }, [data])
-
-    const getSkillColor = (skillName: string) => {
-		switch( skillName.toLowerCase() ) {
-			case "str": return "gray"
-			case "con": return "red"
-			case "dex": return "yellow"
-			case "wis": return "blue"
-			case "int": return "green"
-			case "cha": return "pink"
-			default: return ""
-		}
-	}
 
     function getSkillsWithProficiencyFromAbility(ability: string, skillProfs: string[], dataset: any) {
         const skills: string[] = getSkillsWithAbility(ability, dataset)
@@ -159,14 +246,19 @@ const ScoresDisplay = (props: any) => {
         return skills
     }
 
-    return (
+    return ( 
         <div>
             <div className="abilityBoxHolder">
 
                 {abilityDisplay.map((abDisplay: AbilityDisplay) =>
                 <div key={abDisplay.abName}>
                     <p className="abilityTitleP">
-                        {abDisplay.abName} {isNaN(abDisplay.abScore) ? 0 : abDisplay.abScore} {abDisplay.abBonus != 0 && "+" + abDisplay.abBonus} <br />&nbsp;&nbsp;
+                        {abDisplay.abName} {isNaN(abDisplay.abScore) ? 0 : abDisplay.abScore}
+                        
+                        
+                        
+                        
+                        {abDisplay.abBonus != 0 && "+" + abDisplay.abBonus} <br />&nbsp;&nbsp;
                         <b>({(abDisplay.abModifier >= 0 ? "+" : "") + abDisplay.abModifier})</b>
                     </p> 
                     <div className={"abilityBox " + abDisplay.displayColor}>

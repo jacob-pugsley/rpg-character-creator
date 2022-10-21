@@ -155,41 +155,6 @@ const CreateCharacter = () => {
         })
     }
 
-    const onSelectClass = (event: ChangeEvent) => {
-        let el = event.target as HTMLSelectElement;
-        let val = el.value
-
-        if (val != null) {
-            //setClassName(val)
-            updateClass(
-                {className: val}
-            )
-        }
-    }
-
-    const onSelectRace = (event: ChangeEvent) => {
-        let el = event.target as HTMLSelectElement;
-        let val = el.value
-
-        if (val != null) {
-            updateRace(
-                {raceName: val}
-            )
-        }
-    }
-
-    const onSelectBackground = (event: ChangeEvent) => {
-        let el = event.target as HTMLSelectElement;
-        let val = el.value
-
-        if (val != null) {
-            updateBackground(
-                {backgroundName: val}
-            )
-        } 
-    }
-
-
     switch (step) {
         case 0:
             return (

@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import ReactTooltip from 'react-tooltip'
 import CharacterInfoDisplay from './CharacterInfoDisplay'
 import SkillList from './SkillList'
@@ -32,8 +32,14 @@ const BackgroundDisplay = (props: any) => {
 		})
     }
 
+    const onSelectBackground = (val: string) => {
+        props.updater(
+            {backgroundName: val}
+        )
+    }
+
     return (
-        <CharacterInfoDisplay title={`Background: ${props.backgroundName}`} namelist={props.backgroundlist} 
+        <CharacterInfoDisplay title={`Background: ${props.backgroundName}`} updateSelectedName={onSelectBackground} namelist={props.backgroundlist} 
             infotext="Your background provides more specifics on what your character does and what kind of experiences they've had. 
             Specifically, it provides you with more languages, skill proficiencies, and items."
         >

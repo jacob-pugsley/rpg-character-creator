@@ -116,15 +116,10 @@ const RaceDisplay = (props: any) => {
 
     const [data, updateData] = useState(Default_Data);
 
-	const onSelectRace = (event: ChangeEvent) => {
-		let el = event.target as HTMLSelectElement;
-		let val = el.value
-	
-		if (val != null) {
-			props.updater(
-				{raceName: val}
-			)
-		}
+	const onSelectRace = (val: string) => {
+		props.updater(
+			{raceName: val}
+		)
 	}
 	
 
@@ -150,7 +145,7 @@ const RaceDisplay = (props: any) => {
 	}
 
     return (
-		<CharacterInfoDisplay title={`Race: ${props.raceName}`} namelist={props.racelist} 
+		<CharacterInfoDisplay title={`Race: ${props.raceName}`} updateSelectedName={onSelectRace} namelist={props.racelist} 
 			infotext="Your race determines some of your character's abilities as well as your size, movement speed, and the languages you speak."
 		>
 			<div className="skillListContainerLeft">
