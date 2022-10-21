@@ -102,7 +102,8 @@ const SkillList = (props:any) => {
     }
 
     return (
-        <ItemsWithInfo items={skillList} allowDuplicates={false} addProficiency={props.addProficiency} checkable={props.checkable} onUpdate={updateSkills}/>
+        <ItemsWithInfo items={skillList} allowDuplicates={false} addProficiency={props.addProficiency} checkable={props.checkable} 
+        maxChecked={props.maxChecked} onUpdate={updateSkills}/>
     )
 
 }

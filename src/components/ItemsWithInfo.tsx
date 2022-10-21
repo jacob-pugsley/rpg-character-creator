@@ -21,6 +21,8 @@ const ItemsWithInfo = (props: any) => {
     const [selectedItem, setSelectedItem] = useState(Fake_IWD)
     const [selectedElement, setSelectedElement] = useState(Fake_Element)
     const [checkedSkills, setCheckedSkill] = useState(Fake_CheckedSkills)
+
+    const [errorMessage, setErrorMessage] = useState("")
     
 
     const items: ItemWithDescription[] = props.items
@@ -107,7 +109,12 @@ const ItemsWithInfo = (props: any) => {
     }
 
     const updateParent = () => {
-        props.onUpdate(checkedSkills)
+        if( checkedSkills.length !== props.maxChecked ) {
+            setErrorMessage(`Please choose exactly ${props.maxChecked} items.`)
+        } else {
+            setErrorMessage("")
+            props.onUpdate(checkedSkills)
+        }
     }
 
     return (        
@@ -120,8 +127,11 @@ const ItemsWithInfo = (props: any) => {
             <div id="infoDisplay">
                 <p>{selectedItem.description}</p>
             </div>
-
-            {props.checkable && <button type="button" onClick={updateParent}>Update selections</button>}
+            <div id="iwi-buttonDiv">
+                {props.checkable && <button type="button" onClick={updateParent}>Update selections</button>}
+                <br />
+                <span id="iwi-errorSpan">{errorMessage}</span>
+            </div>
         </div>
     )
 }

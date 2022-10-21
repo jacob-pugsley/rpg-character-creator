@@ -164,7 +164,8 @@ const ClassDisplay = (props: any) => {
 				<p className="contentP">Your <b>skill proficiencies</b> are skills that you are particularly good at. Think about the skills that would best fit
 				your character's background as well as your own play style. Choose {data.proficiencyChoices} of the following skills:</p>
 				<br /><br /><br /> 
-				{data.skillProficiencies !== undefined && <SkillList skills={getSkills(data.skillProficiencies)} addProficiency={true} checkable={true} updater={updateSkills}/>}
+				{data.skillProficiencies !== undefined && <SkillList skills={getSkills(data.skillProficiencies)} addProficiency={true} checkable={true} 
+				maxChecked={data.proficiencyChoices} updater={updateSkills}/>}
 			</div>
 		</CharacterInfoDisplay>
 	)
