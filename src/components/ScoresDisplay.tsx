@@ -246,6 +246,8 @@ const ScoresDisplay = (props: any) => {
         return skills
     }
 
+
+
     return ( 
         <div>
             <div className="abilityBoxHolder">
@@ -263,7 +265,11 @@ const ScoresDisplay = (props: any) => {
                     </p> 
                     <div className={"abilityBox " + abDisplay.displayColor}>
                         {abDisplay.abName === "Constitution" &&
-                        <p>There are no skills <br /> associated with Constitution.</p>}
+                            <p>
+                                <b>Hit points: {props.hitPoints} </b><br />
+                                There are no skill checks for Constitution.
+                            </p>
+                        }
 
 
                         <ul className="abilityBoxUl">   

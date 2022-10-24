@@ -5,7 +5,9 @@ export interface Character {
     pcLevel: number, //the character's starting level
     pcClass: CharacterClass, //class
     pcRace: CharacterRace, //race
-    pcBackground: CharacterBackground //background
+    pcBackground: CharacterBackground, //background
+    pcAbilityScores: number[],
+    pcHitPoints: number[]
 }
 
 export interface CharacterClass {

@@ -84,6 +84,8 @@ const CreateCharacter = () => {
         Init_Background
     )
 
+    const [character, setCharacter] = useState({} as Character)
+
     
 
     //updaters
@@ -155,6 +157,12 @@ const CreateCharacter = () => {
         })
     }
 
+    const characterUpdater = (char: Character) => {
+        setCharacter(char)
+
+        nextStep()
+    }
+
     switch (step) {
         case 0:
             return (
@@ -200,7 +208,11 @@ const CreateCharacter = () => {
         case 2: 
             return (
                 <div>
-                    <CharacterCards characterClass={selectedClass} characterRace={selectedRace} characterBackground={selectedBackground} rolls={rolls}/>
+                    <CharacterCards characterClass={selectedClass} characterRace={selectedRace} characterBackground={selectedBackground} 
+                        rolls={rolls}
+                        editable={true}
+                        updater={characterUpdater} 
+                    />
                     <h3>Choose your class, race, and background</h3>
 
                     <ClassDisplay className={selectedClass.className} updater={updateClass} classlist={Classes}/>
@@ -208,9 +220,19 @@ const CreateCharacter = () => {
                     <RaceDisplay raceName={selectedRace.raceName} updater={updateRace} racelist={Races}/>
 
                     <BackgroundDisplay backgroundName={selectedBackground.backgroundName} updater={updateBackground} backgroundlist={Backgrounds}/>
-
-                    <button onClick={nextStep}>Confirm selections and move on.</button>
-
+                </div>
+            )
+        case 3:
+            return (
+                <div>
+                    <h3>This character is confirmed:</h3>
+                    <CharacterCards characterClass={character.pcClass} characterRace={character.pcRace} characterBackground={character.pcBackground}
+                        name={character.pcName} 
+                        rolls={character.pcAbilityScores}
+                        editable={false}
+                        hitPointsList={character.pcHitPoints}
+                        updater={characterUpdater} 
+                    />
                 </div>
             )
         default: 
