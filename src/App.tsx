@@ -21,7 +21,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>DND 5e Character Sheet Creator</h1>
+      <h1>RPG Character Sheet Creator</h1>
       
       {characters.length > 0 ?<CharacterCards characters={characters} /> : <h3>Characters you create will show up here</h3>}
       <CreateCharacter />
