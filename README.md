@@ -6,7 +6,7 @@ The app is built with React and Spring Boot, and is a work in progress. All info
 
 ![Output character](/images/character-creator.png?raw=true)
 
-#Current features
+# Current features
 <ul>
     <li>Rolling and assigning ability scores</li>
     <li>Choosing a class, race, and background</li>
@@ -14,5 +14,5 @@ The app is built with React and Spring Boot, and is a work in progress. All info
     <li>Rolling HP based on character level</li>
 </ul>
 
-#Future features
+# Future features
 Future goals include choosing starting equipment, ouputting a PDF character sheet, and more!
