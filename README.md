@@ -2,7 +2,9 @@ This is an RPG character creator based on existing games. It aims to make it eas
 
 The app is built with React and Spring Boot, and is a work in progress. All information is provided by a third-party API.
 
+![Creation process](/images/class-display.png?raw=true)
 
+![Output character](/images/character-creator.png?raw=true)
 
 #Current features
 <ul>
